@@ -3,6 +3,7 @@ import requests
 import numpy as np
 import abc
 import json
+import struct
 
 
 class Query(abc.ABC):
@@ -35,8 +36,8 @@ class Sum(Query):
 		return total
 
 	def generate_noise(self, data):
-    	sensitivity = 1
-    	epsilon = 0.5
+		sensitivity = 1
+		epsilon = 0.5
 		return np.random.laplace(scale=(n * sensitivity)/epsilon)
 
 
@@ -79,14 +80,14 @@ def start_query():
 
 @app.route('/query-example', methods=['POST'])
 def query_example():
-    data = int(request.data)
-    print(data)
-    sensitivity = 1
-    epsilon = 0.5
-    n = 1
-    return str(np.random.laplace(scale=(n * sensitivity)/epsilon) + data)
+	data = float(request.data)
+	print(data)
+	sensitivity = 1
+	epsilon = 0.5
+	n = 1
+	return str(np.random.laplace(scale=(n * sensitivity)/epsilon) + data)
 
 
 
 if __name__ == "__main__":
-	app.run(debug=True, port='8080')
+	app.run(debug=False, port=8080)

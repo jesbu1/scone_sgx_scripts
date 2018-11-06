@@ -1,11 +1,11 @@
-[
-  {
-        "user_id": {
-            "$uuid": "18f729d9838a4e8ab66c3a6aac2ecdb0"
-        },
+{
+    "18f729d9838a4e8ab66c3a6aac2ecdb0": {
         "_id": {
             "$oid": "59780c0388f6630e9e15fb5b"
         },
+        "end_ts": 1500982957,
+        "ip": "127.0.0.1",
+        "port": "8020",
         "data": {
             "distances": [
                 0.0,
@@ -63,13 +63,12 @@
         }
     },
 
-    {
-        "user_id": {
-            "$uuid": "28f729d9838a4e8ab66c3a6aac2ecdb0"
-        },
+    "28f729d9838a4e8ab66c3a6aac2ecdb0": {
         "_id": {
             "$oid": "59780c0388f6630e9e15fb5b"
         },
+        "ip": "127.0.0.1",
+        "port": "8030",
         "data": {
             "distances": [
                 0.0,
@@ -127,13 +126,12 @@
         }
     },
 
-    {
-        "user_id": {
-            "$uuid": "38f729d9838a4e8ab66c3a6aac2ecdb0"
-        },
+    "38f729d9838a4e8ab66c3a6aac2ecdb0": {
         "_id": {
             "$oid": "59780c0388f6630e9e15fb5b"
         },
+        "ip": "127.0.0.1",
+        "port": "8040",
         "data": {
             "distances": [
                 0.0,
@@ -190,4 +188,4 @@
             "time_zone": "America/Los_Angeles"
         }
     }
-]
+}

@@ -1,6 +1,8 @@
 import sys
+import requests
 from flask import Flask, request, Response
 import json
+import ast
 app = Flask(__name__)
 
 
@@ -11,20 +13,28 @@ def query():
     2. Ensure user wants to respond to this type of query
     3. Return value
     """
-    if aggregate_ip != request.remote_addr:
-    	return json.dumps({'response':'screw off, fake aggregator'})
-    query_type = request.data
+    # if aggregate_ip != request.remote_addr:
+    # 	return json.dumps({'response':'screw off, fake aggregator'})
+    # query_type = request.data.decode("utf-8") 
+    # print(q)
+    input_list = request.data.decode("utf-8")
+    input_list = ast.literal_eval(input_list)
+    json_data, query_type = str(input_list[0]), input_list[1]
+    print(json_data)
+    print(query_type)
     if query_type == "sum":
-    	loaded_json = json.loads(json_data)
-    	user_data = loaded_json[user]['speeds']
-    	if user_data == []:
-    		return json.dumps({'response':'none'})
-    	else:
-    		return json.dumps({'response':'yes', 'data': sum(user_data)})
+        loaded_json = json.loads(json_data)
+        user_data = loaded_json["data"]["speeds"]
+        if user_data == []:
+            return json.dumps({'response':'none'})
+        else:
+            print(sum(user_data))
+            return json.dumps({'response':'yes', 'data': str(sum(user_data))})
     else:
-    	return json.dumps({'response':'no'})
+        return json.dumps({'response':'no'})
 
 if __name__ == "__main__":
-	nonlocal aggregate_ip, user
-	aggregate_ip = sys.argv[1]
-	user = int(sys.argv[2])
+    aggregate_ip = sys.argv[1]
+    user = sys.argv[2]
+    port = int(sys.argv[3])
+    app.run(debug=True, port=port) # Different port than the agg script.
