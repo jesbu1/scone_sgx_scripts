@@ -6,6 +6,7 @@
         "end_ts": 1500982957,
         "ip": "127.0.0.1",
         "port": "8020",
+        "local_tunnel": "https://funny-vampirebat-35.localtunnel.me",
         "data": {
             "distances": [
                 0.0,
@@ -69,6 +70,7 @@
         },
         "ip": "127.0.0.1",
         "port": "8030",
+        "local_tunnel": "https://tasty-yak-9.localtunnel.me",
         "data": {
             "distances": [
                 0.0,
@@ -132,6 +134,7 @@
         },
         "ip": "127.0.0.1",
         "port": "8040",
+        "local_tunnel": "https://friendly-dog-0.localtunnel.me",
         "data": {
             "distances": [
                 0.0,

@@ -8,6 +8,28 @@ import abc
 import numpy as np
 
 app = Flask(__name__)
+class RequestThread(threading.Thread):
+    def __init__(self, enclave, json_data, enclaves_in_query, query_object):
+        threading.Thread.__init__(self)
+        self.enclaves_in_query = enclaves_in_query
+        self.enclave = enclave
+        self.json_data = json_data
+        self.query_object = query_object
+
+    def run(self):
+        user_data = self.json_data[self.enclave]
+        if user_data != []:
+            print('before request')
+            if user_data['local_tunnel'] is not None:
+                r = requests.post(user_data['local_tunnel'] + "/query",
+             data=str([json.dumps(user_data), str(self.query_object)]))
+                print('im past request')
+            else:
+                r = requests.post("http://" + user_data['ip'] + ':' + user_data['port'] + "/query",
+             data=str([json.dumps(user_data), str(self.query_object)]))
+            r = json.loads(r.text)
+            if r['response'] != 'no':
+                self.enclaves_in_query[self.enclave] = r['data']
 
 class Query(abc.ABC):
     """
@@ -50,6 +72,9 @@ class Sum(Query):
 
     def __repr__(self):
         return "sum"
+@app.route('/')
+def test():
+    return "hello"
 
 @app.route('/start_query', methods=['POST'])
 def start_query():
@@ -65,20 +90,9 @@ def start_query():
     query_object = query_mapping[request.data.decode("utf-8")]
 
     list_of_enclaves = ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"] #open('FILE FOR ALL USER ENCLAVES AND ADDRESSES')
-    def send_requests_async(enclave):
-        try:
-            user_data = json_data[enclave]
-            if user_data != []:
-                r = requests.post("http://" + user_data['ip'] + ':' + user_data['port'] + "/query",
-                 data=str([json.dumps(user_data), str(query_object)]))
-                r = json.loads(r.text)
-                if r['response'] != 'no':
-                    enclaves_in_query[enclave] = r['data']
-        except:
-            return
     threads = []
     for enclave in list_of_enclaves:
-        thread = threading.Thread(target=send_requests_async(enclave))
+        thread = RequestThread(enclave, json_data, enclaves_in_query, query_object)
         thread.start()
         threads.append(thread)
     for thread in threads:
@@ -110,4 +124,4 @@ def start_query():
 if __name__ == "__main__":
     json_data = json.load(open("mock_data.json"))
     #print(json_data["18f729d9838a4e8ab66c3a6aac2ecdb0"]["data"]["speeds"])
-    app.run(debug=True, port=8010) # Different port than the agg script.
+    app.run(host='0.0.0.0', port=8080) # Different port than the agg script.

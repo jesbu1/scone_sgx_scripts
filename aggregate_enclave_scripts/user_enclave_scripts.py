@@ -34,7 +34,6 @@ def query():
         return json.dumps({'response':'no'})
 
 if __name__ == "__main__":
-    aggregate_ip = sys.argv[1]
-    user = sys.argv[2]
-    port = int(sys.argv[3])
-    app.run(debug=True, port=port) # Different port than the agg script.
+    user = sys.argv[1]
+    port = int(sys.argv[2])
+    app.run(debug=False, port=port) # Different port than the agg script.
