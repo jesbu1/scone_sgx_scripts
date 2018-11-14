@@ -40,3 +40,6 @@ def query_start():
 		 name=container, remove=True, network='e-mission', ports={'8080':8080}, mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=False)
 	print(ret[container])
 	return json.dumps(ret)
+
+if __name__ == "__main__":
+	app.run(port=2000)
