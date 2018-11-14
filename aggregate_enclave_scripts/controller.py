@@ -26,10 +26,11 @@ def query_start():
 	2. Wake them up with docker resume
 	3. Ask for query from them
 	"""
-	list_of_containers = ['kate', 'jesse', 'jack'] #open()
+	list_of_containers = ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"] #open()
 	path = '/Users/Jesse/Desktop/e-mission/e-mission-server/'
 	ret = {}
 	for container in list_of_containers:
-
-		ret[container] = ret.append(client.containers.run('skxu3/emission-scone3.5', 'pip install flask', name='kate', network='e-mission', ports={'8080':8080}, mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=False))
+		ret[container] = client.containers.run('skxu3/emission-scone3.5', ['SCONE_MODE=AUTO', 'python user_enclave_scripts.py ' + r.text + ' ' + container],
+		 name=container, remove=True, network='e-mission', ports={'8080':8080}, mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=False)
+	print(ret[container])
 	return json.dumps(ret)

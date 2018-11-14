@@ -9,26 +9,17 @@ import numpy as np
 
 app = Flask(__name__)
 class RequestThread(threading.Thread):
-    def __init__(self, enclave, json_data, enclaves_in_query, query_object):
+    def __init__(self, controller, enclaves_in_query, query_object):
         threading.Thread.__init__(self)
         self.enclaves_in_query = enclaves_in_query
-        self.enclave = enclave
-        self.json_data = json_data
+        self.controller = controller
         self.query_object = query_object
 
     def run(self):
-        user_data = self.json_data[self.enclave]
-        if user_data != []:
-            print('before request')
-            if user_data['local_tunnel'] is not None:
-                r = requests.post(user_data['local_tunnel'] + "/query",
-             data=str([json.dumps(user_data), str(self.query_object)]))
-                print('im past request')
-            else:
-                r = requests.post("http://" + user_data['ip'] + ':' + user_data['port'] + "/query",
-             data=str([json.dumps(user_data), str(self.query_object)]))
-            r = json.loads(r.text)
-            if r['response'] != 'no':
+        r = requests.post(controller + "/request_query", data=str(self.query_object))
+        r = json.loads(r.text)
+        for enclave in r:
+            if enclave['response'] != 'no':
                 self.enclaves_in_query[self.enclave] = r['data']
 
 class Query(abc.ABC):
@@ -89,11 +80,11 @@ def start_query():
     enclaves_in_query = {}
     query_object = query_mapping[request.data.decode("utf-8")]
 
-    list_of_enclaves = ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"] #open('FILE FOR ALL USER ENCLAVES AND ADDRESSES')
-    list_of_controllers = []
+    #open('FILE FOR ALL USER ENCLAVES AND ADDRESSES')
+    controller_map = {'40.118.206.197': ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"]}
     threads = []
-    for enclave in list_of_controllers:
-        thread = RequestThread(enclave, json_data, enclaves_in_query, query_object)
+    for controller, list_of_enclaves in controller_map.items():
+        thread = RequestThread(controller, enclaves_in_query, query_object)
         thread.start()
         threads.append(thread)
     for thread in threads:
