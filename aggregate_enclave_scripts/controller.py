@@ -34,7 +34,7 @@ def query_start():
 	path = '/home/jessez/e-mission-server/'
 	ret = {}
 	print(request.data)
-	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source='"$(pwd)"/conf/storage/db.conf', type='bind')
+	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + '/conf/storage/db.conf', type='bind')
 	for container in list_of_containers:
 		ret[container] = client.containers.run('skxu3/emission-scone3.5', ['SCONE_MODE=AUTO', 'python user_enclave_scripts.py ' + str(request.data) + ' ' + container],
 		 name=container, remove=True, network='e-mission', ports={'8080':8080}, mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=False)
