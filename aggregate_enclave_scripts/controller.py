@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import sys
 import requests
 from flask import Flask, request, Response
@@ -9,7 +10,7 @@ import numpy as np
 import subprocess
 import docker
 from docker.types import Mount
-#!/usr/bin/python3
+
 client = docker.from_env()
 
 app = Flask(__name__)
