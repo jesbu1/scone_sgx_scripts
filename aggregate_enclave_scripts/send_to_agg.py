@@ -21,4 +21,5 @@ def query(query_type):
 if __name__ == "__main__":
     query_type = sys.argv[1]
     aggregator_ip = sys.argv[2]
+	os.system('SCONE_MODE = AUTO')
     query(query_type, aggregator_ip)
