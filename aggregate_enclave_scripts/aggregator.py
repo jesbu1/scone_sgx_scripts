@@ -16,7 +16,7 @@ class RequestThread(threading.Thread):
         self.query_object = query_object
 
     def run(self):
-        r = requests.post(controller + "/request_query", data=str(self.query_object))
+        r = requests.post(self.controller + "/request_query", data=str(self.query_object))
         r = json.loads(r.text)
         for enclave in r:
             if enclave['response'] != 'no':
