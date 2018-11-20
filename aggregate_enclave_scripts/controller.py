@@ -19,6 +19,8 @@ container_port = 1025
 
 class DockerThread(threading.Thread):
 	def __init__(self, image, query_type, container, initial_command, aggregator, mount):
+		global container_port 
+
 		threading.Thread.__init__(self)
 		self.image = image
 		self.query_type = query_type
@@ -26,10 +28,12 @@ class DockerThread(threading.Thread):
 		self.initial_command = initial_command
 		self.aggregator = aggregator
 		self.mount = mount
+		self.port = container_port
+		container_port += 1
+
 	def run(self):
 		client.containers.run(self.image, command= self.initial_command + ' ' + self.query_type + ' ' + self.container + ' ' +  self.aggregator,
-			name = self.container, remove=True, network='e-mission', ports = {str(container_port):container_port}, mounts=[self.mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp')
-		container_port += 1
+			name = self.container, remove=True, network='e-mission', ports = {str(self.port):self.port}, mounts=[self.mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp')
 
 @app.route('/', methods=['GET'])
 def home():
