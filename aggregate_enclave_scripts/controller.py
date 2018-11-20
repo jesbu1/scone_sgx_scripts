@@ -14,7 +14,7 @@ from docker.types import Mount
 client = docker.from_env()
 
 app = Flask(__name__)
-path = os.path.expanduser("~/e-mission-server")
+path = os.path.expanduser("~jsullivan27/e-mission-server/")
 
 class DockerThread(threading.Thread):
 	def __init__(self, image, query_type, container, initial_command, aggregator, mount):
@@ -26,7 +26,7 @@ class DockerThread(threading.Thread):
 		self.aggregator = aggregator
 		self.mount = mount
 	def run(self):
-		client.containers.run(self.image, command= self.initial_command + self.query_type + ' ' + self.container + ' ' +  self.aggregator,
+		client.containers.run(self.image, command= self.initial_command + ' ' + self.query_type + ' ' + self.container + ' ' +  self.aggregator,
 			name = self.container, remove=True, network='e-mission', ports = {'8080':8080}, mounts=[self.mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp')
 
 @app.route('/', methods=['GET'])
