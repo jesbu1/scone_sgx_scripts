@@ -17,6 +17,9 @@ app = Flask(__name__)
 
 
 
+@app.route('/', methods=['GET'])
+def home():
+	return "hello!"
 
 @app.route('/upload_info', methods=['POST'])
 def upload():
@@ -36,8 +39,7 @@ def query_start():
 	print(request.data)
 	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
 	for container in list_of_containers:
-            print(container)
-            ret[container] = client.containers.run('skxu3/emission-scone3.5', command='python user_enclave_scripts.py ' + str(request.data) + ' ' + container,
+		ret[container] = client.containers.run('skxu3/emission-scone3.5', ['python user_enclave_scripts.py ' + str(request.data) + ' ' + container],
 		 name=container, remove=True, network='e-mission', ports={'8080':8080}, mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=False)
             print(ret[container])
         return json.dumps(ret)

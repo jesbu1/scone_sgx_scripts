@@ -42,21 +42,26 @@ if __name__ == "__main__":
     port = int(sys.argv[2])
     app.run(debug=False, port=port) # Different port than the agg script.
 """
-def query(query_type, e_id):
+def query(query_type, e_id, aggregator_ip):
     if query_type == "sum":
         try:
             user_data = json_data[e_id]["data"]["speeds"]
             # print(user_data)
             if user_data == []:
-                return json.dumps({'response':'none'})
+                data = json.dumps({'response':'none'})
+                requests.push(aggregator_ip, data=data)
             else:
-                return json.dumps({'response':'yes', 'data': sum(user_data)})
+                data = json.dumps({'response':'yes', 'data': sum(user_data)})
+                requests.push(aggregator_ip, data=data)
         except:
-            return json.dumps({'response':'none'})
+            data = json.dumps({'response':'none'})
+            requests.push(aggregator_ip, data=data)
     else:
         raise NotImplementedError
 if __name__ == "__main__":
     json_data = json.load(open("mock_data.json"))
     query_type = sys.argv[1]
     enclave_id = sys.argv[2]
-    return query(query_type, enclave_id)
+    aggregator = '35.236.79.116:80'
+	os.system('SCONE_MODE = AUTO')
+    return query(query_type, enclave_id, aggregator)
