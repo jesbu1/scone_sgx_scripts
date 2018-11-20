@@ -16,7 +16,8 @@ class RequestThread(threading.Thread):
         self.query_object = query_object
 
     def run(self):
-        r = requests.post(controller + "/request_query", data=str(self.query_object))
+        r = requests.post("http://127.0.0.1:2000/request_query", data=str(self.query_object))
+        print(r.text)
         r = json.loads(r.text)
         for enclave in r:
             if enclave['response'] != 'no':
@@ -81,7 +82,7 @@ def start_query():
     query_object = query_mapping[request.data.decode("utf-8")]
 
     #open('FILE FOR ALL USER ENCLAVES AND ADDRESSES')
-    controller_map = {'40.118.206.197': ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"]}
+    controller_map = {'35.236.79.116:2000': ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"]}
     threads = []
     for controller, list_of_enclaves in controller_map.items():
         thread = RequestThread(controller, enclaves_in_query, query_object)
@@ -116,4 +117,4 @@ def start_query():
 if __name__ == "__main__":
     json_data = json.load(open("mock_data.json"))
     #print(json_data["18f729d9838a4e8ab66c3a6aac2ecdb0"]["data"]["speeds"])
-    app.run(host='0.0.0.0', port=8080) # Different port than the agg script.
+    app.run(host='0.0.0.0', port=80) # Different port than the agg script.
