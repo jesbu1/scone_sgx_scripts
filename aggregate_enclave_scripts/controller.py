@@ -7,7 +7,6 @@ import json
 import uuid
 import threading
 import abc
-import numpy as np
 import subprocess
 import docker
 from docker.types import Mount
