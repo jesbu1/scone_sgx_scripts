@@ -62,7 +62,8 @@ class Sum(Query):
         sensitivity = 1
         epsilon = 0.5
         n = len(data)
-        return np.random.laplace(scale=(n * sensitivity)/epsilon)
+        return 0
+        #return np.random.laplace(scale=(n * sensitivity)/epsilon)
 
 
     def __repr__(self):
@@ -106,6 +107,7 @@ def add_to_query_list():
         query_list.append(data['value'])
 
 def clear_query_list():
+    global query_list
     query_list = []
 
 if __name__ == "__main__":
