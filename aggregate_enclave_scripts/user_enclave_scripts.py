@@ -60,7 +60,7 @@ def query(query_type, e_id, aggregator_ip):
                 data = json.dumps({'response':'none'})
                 requests.push(aggregator_ip, data=data)
             else:
-                data = json.dumps({'response':'yes', 'data': sum(user_data)})
+                data = json.dumps({'response':'yes', 'value': sum(user_data)})
                 requests.push(aggregator_ip, data=data)
         except:
             data = json.dumps({'response':'none'})

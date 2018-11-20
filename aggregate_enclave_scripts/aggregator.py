@@ -50,9 +50,7 @@ class Sum(Query):
         #self.amount_of_noise = 0
         total = 0
         for value in data:
-            value = json.loads(value)
-            if value['response'] == 'yes':
-                total += int(value['data'])
+            total += int(value)
             # try:
             #     value = float(data[enclave])
             # except:
@@ -103,8 +101,9 @@ def start_query():
 
 @app.route('/add_to_query_list', methods=['POST'])
 def add_to_query_list():
-    q_result = float(request.data)
-    query_list.append(q_result)
+    data = json.loads(request.data)
+    if data['response'] == 'yes':
+        query_list.append(data['value'])
 
 def clear_query_list():
     query_list = []
