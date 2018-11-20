@@ -5,7 +5,6 @@ import json
 import uuid
 import threading
 import abc
-import numpy as np
 
 app = Flask(__name__)
 query_list = []
