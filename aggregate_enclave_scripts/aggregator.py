@@ -86,7 +86,7 @@ def start_query():
     query_object = query_mapping[request.data.decode("utf-8")]
 
     #open('FILE FOR ALL USER ENCLAVES AND ADDRESSES')
-    controller_map = {'35.235.87.138:80': ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"]}
+    controller_map = {'35.235.87.138:2000': ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"]}
     threads = []
     for controller, list_of_enclaves in controller_map.items():
         thread = RequestThread(controller, enclaves_in_query, query_object)
@@ -102,7 +102,7 @@ def start_query():
 
 @app.route('/add_to_query_list', methods=['POST'])
 def add_to_query_list():
-    data = json.loads(request.data)
+    data = json.loads(request.data.decode("utf-8"))
     if data['response'] == 'yes':
         query_list.append(data['value'])
 
