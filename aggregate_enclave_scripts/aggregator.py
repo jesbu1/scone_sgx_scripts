@@ -19,7 +19,7 @@ class RequestThread(threading.Thread):
 
     def run(self):
         # for controller in controllers:
-        r = requests.post("http://127.0.0.1:2000/request_query", data=str(self.query_object))
+        r = requests.post(controller + "/request_query", data=str(self.query_object))
         # print(r.text)
         # r = json.loads(r.text)
         # for enclave in r:
