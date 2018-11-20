@@ -23,9 +23,9 @@ class DockerThread(threading.Thread):
 		self.initial_command = initial_command
 		self.aggregator = aggregator
 		self.mount = mount
-    def run(self):
-    	client.containers.run(self.image, command= self.initial_command + self.query_type + ' ' + self.container + ' ' +  self.aggregator,
-    		name = self.container, remove=True, network='e-mission', ports = {'8080':8080}, mounts=[self.mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp')
+	def run(self):
+		client.containers.run(self.image, command= self.initial_command + self.query_type + ' ' + self.container + ' ' +  self.aggregator,
+			name = self.container, remove=True, network='e-mission', ports = {'8080':8080}, mounts=[self.mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp')
 
 @app.route('/', methods=['GET'])
 def home():
@@ -45,7 +45,7 @@ def query_start():
 	list_of_containers = ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"] #open()
 	#path = '/Users/Jesse/Desktop/e-mission/e-mission-server/'
 	path = '~/e-mission-server'
-    query_type = str(request.data, 'utf-8')
+	query_type = str(request.data, 'utf-8')
 	print(query_type)
 	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
 	threads = []
