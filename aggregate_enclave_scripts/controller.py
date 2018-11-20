@@ -14,7 +14,7 @@ from docker.types import Mount
 client = docker.from_env()
 
 app = Flask(__name__)
-path = os.path.expanduser("~jsullivan27/e-mission-server/")
+path = os.path.expanduser("~/e-mission-server/")
 container_port = 1025
 
 class DockerThread(threading.Thread):
@@ -63,4 +63,4 @@ def query_start():
 		thread.join()
 	return "Finished"	
 if __name__ == "__main__":
-	app.run(port=80, debug=True)
+	app.run(port=2000, host='0.0.0.0',debug=True)

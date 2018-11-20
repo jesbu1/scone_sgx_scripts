@@ -7,7 +7,7 @@ import os
 
 def query(query_type, e_id, aggregator_ip):
     if query_type == "sum":
-    	aggregator_ip = aggregator_ip + "/add_to_query_list"
+        aggregator_ip = aggregator_ip + "/add_to_query_list"
         try:
             user_data = json_data[e_id]["data"]["speeds"]
             # print(user_data)
