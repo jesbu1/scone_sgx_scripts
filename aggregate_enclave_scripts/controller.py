@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import sys
+import os
 import requests
 from flask import Flask, request, Response
 import json
@@ -14,6 +15,7 @@ from docker.types import Mount
 client = docker.from_env()
 
 app = Flask(__name__)
+path = os.path.expanduser("~/e-mission-server")
 
 class DockerThread(threading.Thread):
 	def __init__(self, image, query_type, container, initial_command, aggregator, mount):
@@ -44,8 +46,6 @@ def query_start():
 	3. Ask for query from them
 	"""
 	list_of_containers = ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"] #open()
-	#path = '/Users/Jesse/Desktop/e-mission/e-mission-server/'
-	path = '~/e-mission-server'
 	query_type = str(request.data, 'utf-8')
 	print(query_type)
 	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
