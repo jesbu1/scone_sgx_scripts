@@ -41,8 +41,8 @@ def query_start():
 	for container in list_of_containers:
 		ret[container] = client.containers.run('skxu3/emission-scone3.5', ['python user_enclave_scripts.py ' + str(request.data) + ' ' + container],
 		 name=container, remove=True, network='e-mission', ports={'8080':8080}, mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=False)
-            print(ret[container])
-        return json.dumps(ret)
-    
+			print(ret[container])
+		return json.dumps(ret)
+	
 if __name__ == "__main__":
-    app.run(port=2000)
+	app.run(port=2000)
