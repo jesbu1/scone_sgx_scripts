@@ -17,6 +17,7 @@ app = Flask(__name__)
 
 class DockerThread(threading.Thread):
 	def __init__(self, image, query_type, container, initial_command, aggregator, mount):
+		threading.Thread.__init__(self)
 		self.image = image
 		self.query_type = query_type
 		self.container = container
