@@ -33,15 +33,17 @@ def query_start():
 	3. Ask for query from them
 	"""
 	list_of_containers = ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"] #open()
-	#path = '/Users/Jesse/Desktop/e-mission/e-mission-server/'
-	path = '/home/jsullivan27/e-mission-server/'
+	path = '/Users/Jesse/Desktop/e-mission/e-mission-server/'
+	#path = '/home/jsullivan27/e-mission-server/'
 	ret = {}
 	print(request.data)
 	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
 	for container in list_of_containers:
-		ret[container] = client.containers.run('skxu3/emission-scone3.5', ['/usr/bin/python3 user_enclave_scripts.py ' + str(request.data) + ' ' + container],
+		ret[container] = client.containers.run('skxu3/emission-scone3.5', command='bash bash_file ' + str(request.data) + ' ' + container + ' 35.236.79.116:80',
 		 name=container, remove=True, network='e-mission', ports={'8080':8080}, mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=False)
-		print(ret[container])
+		#ret[container] = client.containers.run('skxu3/emission-scone3.5', ['/bin/bash','python3 aggregate_enclave_scripts/user_enclave_scripts.py ' + str(request.data) + ' ' + container],
+		 #name=container, remove=True, network='e-mission', ports={'8080':8080}, mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=False)
+		print(ret)
 		return json.dumps(ret)
 	
 if __name__ == "__main__":

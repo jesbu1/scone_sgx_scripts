@@ -1,0 +1,15 @@
+#!/bin/bash
+
+clear 
+while getopts d:c:a: option
+do
+case "${option}"
+in
+d) DATA=${OPTARG};;
+c) CONTAINER=${OPTARG};;
+p) AGGREGATOR=${OPTARG};;
+esac
+done
+SCONE_MODE=AUTO
+pip3 install requests
+python3 aggregate_enclave_scripts/user_enclave_scripts.py $DATA $CONTAINER $AGGREGATOR

@@ -3,7 +3,7 @@ import requests
 # from flask import Flask, request, Response
 import json
 import ast
-
+import os
 
 
 """
@@ -12,11 +12,9 @@ app = Flask(__name__)
 
 @app.route("/query", methods=['POST'])
 def query():
-    """
     #1. Make sure controller is the one querying
     #2. Ensure user wants to respond to this type of query
     #3. Return value
-    """
     # if aggregate_ip != request.remote_addr:
     # 	return json.dumps({'response':'screw off, fake aggregator'})
     # query_type = request.data.decode("utf-8")
@@ -69,10 +67,10 @@ def query(query_type, e_id, aggregator_ip):
     else:
         raise NotImplementedError
 if __name__ == "__main__":
-    install('requests')
+    #install('requests')
+    print(sys.argv)
     json_data = json.load(open("mock_data.json"))
     query_type = sys.argv[1]
     enclave_id = sys.argv[2]
-    aggregator = '35.236.79.116:80'
-	os.system('SCONE_MODE = AUTO')
-    return query(query_type, enclave_id, aggregator)
+    aggregator = sys.argv[3]
+    query(query_type, enclave_id, aggregator)
