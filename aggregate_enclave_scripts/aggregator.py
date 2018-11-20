@@ -8,6 +8,8 @@ import abc
 import numpy as np
 
 app = Flask(__name__)
+query_list = []
+
 class RequestThread(threading.Thread):
     def __init__(self, controller, enclaves_in_query, query_object):
         threading.Thread.__init__(self)
@@ -16,12 +18,13 @@ class RequestThread(threading.Thread):
         self.query_object = query_object
 
     def run(self):
+        # for controller in controllers:
         r = requests.post("http://127.0.0.1:2000/request_query", data=str(self.query_object))
-        print(r.text)
-        r = json.loads(r.text)
-        for enclave in r:
-            if enclave['response'] != 'no':
-                self.enclaves_in_query[self.enclave] = r['data']
+        # print(r.text)
+        # r = json.loads(r.text)
+        # for enclave in r:
+        #     if enclave['response'] != 'no':
+        #         self.enclaves_in_query[self.enclave] = r['Finished']
 
 class Query(abc.ABC):
     """
@@ -44,15 +47,15 @@ class Sum(Query):
         self.id = uuid.uuid4()
 
     def run_query(self, data):
-        self.amount_of_noise = 0
+        #self.amount_of_noise = 0
         total = 0
-        for enclave in data.keys():
-            try:
-                value = float(data[enclave])
-            except:
-                continue
+        for value in data:
+            # try:
+            #     value = float(data[enclave])
+            # except:
+            #     continue
             total += value
-            self.amount_of_noise += 1
+            #self.amount_of_noise += 1
         return total
 
     def generate_noise(self, data):
@@ -90,29 +93,19 @@ def start_query():
         threads.append(thread)
     for thread in threads:
         thread.join()
-    print(enclaves_in_query)
-    value = query_object.run_query(enclaves_in_query)
-    noise = query_object.generate_noise(enclaves_in_query)
+    #print(enclaves_in_query)
+    value = query_object.run_query(query_list)
+    noise = query_object.generate_noise(query_list)
+    clear_query_list()
     return str(value + noise)
-# @app.route("/send_data", methods=['POST'])
-# def send_data():
-#     """
-#     Mock Controller
 
-#     Parse mock json data and send data to the user enclaves.
-#     """
-#     query_type = request.data.decode("utf-8")
-#     print(query_type)
-#     if query_type == "sum":
-#         user_data = json_data["18f729d9838a4e8ab66c3a6aac2ecdb0"]
-#         print(user_data)
-#         if user_data == []:
-#             return json.dumps({'response':'none'})
-#         else:
-#             #return json.dumps({'response':'yes', 'data': sum(user_data)})
-#             requests.post("http://127.0.0.1:8010/query", data=str([json.dumps(user_data), query_type]))
-#     else:
-#     	return json.dumps({'response':'no'})
+@app.route('/add_to_query_list', methods=['POST'])
+def add_to_query_list():
+    q_result = float(request.data)
+    query_list.append(q_result)
+
+def clear_query_list():
+    query_list = []
 
 if __name__ == "__main__":
     json_data = json.load(open("mock_data.json"))
