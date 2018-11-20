@@ -50,11 +50,13 @@ class Sum(Query):
         #self.amount_of_noise = 0
         total = 0
         for value in data:
+            value = json.loads(value)
+            if value['response'] == 'yes':
+                total += int(value['data'])
             # try:
             #     value = float(data[enclave])
             # except:
             #     continue
-            total += value
             #self.amount_of_noise += 1
         return total
 
