@@ -1,6 +1,6 @@
 import sys
 import requests
-from flask import Flask, request, Response
+# from flask import Flask, request, Response
 import json
 import ast
 
@@ -42,6 +42,16 @@ if __name__ == "__main__":
     port = int(sys.argv[2])
     app.run(debug=False, port=port) # Different port than the agg script.
 """
+
+import pip
+
+def install(package):
+    if hasattr(pip, 'main'):
+        pip.main(['install', package])
+    else:
+        pip._internal.main(['install', package])
+
+
 def query(query_type, e_id, aggregator_ip):
     if query_type == "sum":
         try:
@@ -59,6 +69,7 @@ def query(query_type, e_id, aggregator_ip):
     else:
         raise NotImplementedError
 if __name__ == "__main__":
+    install('requests')
     json_data = json.load(open("mock_data.json"))
     query_type = sys.argv[1]
     enclave_id = sys.argv[2]
