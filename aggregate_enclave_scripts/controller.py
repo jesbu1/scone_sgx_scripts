@@ -64,7 +64,7 @@ def query_start():
 	for thread in threads:
 		thread.join()
 		i += 1
-		if i < len(list_of_containers)
+		if i < len(list_of_containers):
 			container = list_of_containers[i]
 			thread = DockerThread('skxu3/emission-scone3.5', query_type, container, 'bash bash_file', '35.236.79.116:80', mount)
 			threads.append(thread)
