@@ -103,6 +103,7 @@ def add_to_query_list():
     data = json.loads(request.data.decode("utf-8"))
     if data['response'] == 'yes':
         query_list.append(data['value'])
+    return
 
 def clear_query_list():
     global query_list
