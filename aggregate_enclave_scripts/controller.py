@@ -63,14 +63,12 @@ def query_start():
 		thread.start()
 	for thread in threads:
 		thread.join()
-	threads = []
-	for i in range(int(len(list_of_containers)/2), len(list_of_containers)):
+		i += 1
 		container = list_of_containers[i]
 		thread = DockerThread('skxu3/emission-scone3.5', query_type, container, 'bash bash_file', '35.236.79.116:80', mount)
 		threads.append(thread)
 		thread.start()
-	for thread in threads:
-		thread.join()
+	
 	return "Finished"	
 if __name__ == "__main__":
 	app.run(port=2000, host='0.0.0.0',debug=True)
