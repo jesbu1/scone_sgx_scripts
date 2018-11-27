@@ -56,7 +56,7 @@ def query_start():
 	print(query_type)
 	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
 	threads = []
-	for i in range(len(list_of_containers)/2):
+	for i in range(int(len(list_of_containers)/2)):
 		container = list_of_containers[i]
 		thread = DockerThread('skxu3/emission-scone3.5', query_type, container, 'bash bash_file', '35.236.79.116:80', mount)
 		threads.append(thread)
@@ -64,7 +64,7 @@ def query_start():
 	for thread in threads:
 		thread.join()
 	threads = []
-	for i in range(len(list_of_containers)/2, len(list_of_containers)):
+	for i in range(int(len(list_of_containers)/2), len(list_of_containers)):
 		container = list_of_containers[i]
 		thread = DockerThread('skxu3/emission-scone3.5', query_type, container, 'bash bash_file', '35.236.79.116:80', mount)
 		threads.append(thread)
