@@ -85,16 +85,14 @@ def start_query():
     enclaves_in_query = {}
     query_object = query_mapping[request.data.decode("utf-8")]
 
-    #open('FILE FOR ALL USER ENCLAVES AND ADDRESSES')
-    controller_map = {'35.235.87.138:2000': ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"]}
+    controller_map = ['35.235.87.138:2000']
     threads = []
-    for controller, list_of_enclaves in controller_map.items():
+    for controller in controller_map:
         thread = RequestThread(controller, enclaves_in_query, query_object)
         thread.start()
         threads.append(thread)
     for thread in threads:
         thread.join()
-    #print(enclaves_in_query)
     value = query_object.run_query(query_list)
     noise = query_object.generate_noise(query_list)
     clear_query_list()
@@ -112,5 +110,4 @@ def clear_query_list():
 
 if __name__ == "__main__":
     json_data = json.load(open("mock_data.json"))
-    #print(json_data["18f729d9838a4e8ab66c3a6aac2ecdb0"]["data"]["speeds"])
     app.run(host='0.0.0.0', port=80) # Different port than the agg script.
