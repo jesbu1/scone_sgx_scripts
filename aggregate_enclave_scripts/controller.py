@@ -50,7 +50,8 @@ def query_start():
 	2. Wake them up with docker resume
 	3. Ask for query from them
 	"""
-	list_of_containers = ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"] #open()
+	#list_of_containers = ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"] #open()
+	list_of_containers = json.loads('~/e-mission-server/mock_data.json').keys()
 	query_type = str(request.data, 'utf-8')
 	print(query_type)
 	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
