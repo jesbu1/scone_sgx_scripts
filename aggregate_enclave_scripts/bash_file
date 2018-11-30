@@ -11,6 +11,6 @@
 # esac
 # done
 SCONE_MODE=AUTO
-pip3 install requests
-echo $DATA
-python3 user_enclave_scripts.py "$1" "$2" "$3"
+while true; do
+	read one two three
+	python3 user_enclave_scripts.py $one $two $three
