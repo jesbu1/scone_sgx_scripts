@@ -15,25 +15,20 @@ client = docker.from_env()
 
 app = Flask(__name__)
 path = os.path.expanduser("~/e-mission-server/")
-container_port = 1025
+# container_port = 1025
 
 class DockerThread(threading.Thread):
-	def __init__(self, image, query_type, container, initial_command, aggregator, mount):
-		global container_port 
-
+	def __init__(self, container, query_type, uuid, agg_ip):
 		threading.Thread.__init__(self)
-		self.image = image
-		self.query_type = query_type
 		self.container = container
-		self.initial_command = initial_command
-		self.aggregator = aggregator
-		self.mount = mount
-		self.port = container_port
-		container_port += 1
+		self.query_type = query_type
+		self.uuid = uuid
+		self.agg_ip = agg_ip
 
 	def run(self):
-		client.containers.run(self.image, command= self.initial_command + ' ' + self.query_type + ' ' + self.container + ' ' +  self.aggregator,
-			name = self.container, remove=True, network='e-mission', ports = {str(self.port):self.port}, mounts=[self.mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp')
+		self.container.unpause()
+		self.container.run_exec(self.query_type + ' ' + self.uuid + ' ' + self.agg_ip)
+		self.container.pause()
 
 @app.route('/', methods=['GET'])
 def home():
@@ -50,20 +45,25 @@ def query_start():
 	2. Wake them up with docker resume
 	3. Ask for query from them
 	"""
-	#list_of_containers = ["18f729d9838a4e8ab66c3a6aac2ecdb0", "28f729d9838a4e8ab66c3a6aac2ecdb0", "38f729d9838a4e8ab66c3a6aac2ecdb0"] #open()
-	list_of_containers = list(json.load(open("mock_data.json")).keys())
 	query_type = str(request.data, 'utf-8')
 	print(query_type)
-	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
 	threads = []
 	for j in range(0, int(len(list_of_containers) / 5) + 1):
 		for i in range(min(int(len(list_of_containers) - j * 5), 5)):
 			container = list_of_containers[j * 5 + i]
-			thread = DockerThread('skxu3/emission-scone3.5', query_type, container, 'bash bash_file', '35.236.79.116:80', mount)
-			threads.append(thread)
+			thread = DockerThread(container[0], query_type, container[1], '35.236.79.116:80')
 			thread.start()
 		for thread in threads:
 			thread.join()
 	return "Finished"	
 if __name__ == "__main__":
 	app.run(port=2000, host='0.0.0.0',debug=True)
+	global list_of_containers 
+	list_of_containers = list(json.load(open("mock_data.json")).keys())
+	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
+	for i in range(len(list_of_containers)):
+		container = list_of_containers[i]
+		list_of_containers[i] = [client.containers.run('skxu3/emission-scone3.5', command = "bash bash_file",
+			name = container, remove=True, network='e-mission', mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=True),
+			container]
+		list_of_containers[i].pause()
