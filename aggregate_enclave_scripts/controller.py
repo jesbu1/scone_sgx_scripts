@@ -62,7 +62,8 @@ if __name__ == "__main__":
 	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
 	for i in range(len(list_of_containers)):
 		container = list_of_containers[i]
-		list_of_containers[i] = client.containers.run('skxu3/emission-scone3.5', command = "bash bash_file",
+		list_of_containers[i] = [client.containers.run('skxu3/emission-scone3.5', command = "bash bash_file",
 			name = container, remove=True, network='e-mission', mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=True),
-			container
+			container]
 		list_of_containers[i].pause()
+	print(list_of_containers)
