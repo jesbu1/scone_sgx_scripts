@@ -65,7 +65,7 @@ def start():
         for i in range(len(list_of_containers)):
                 container = list_of_containers[i]
                 print(container)
-                list_of_containers[i] = [client.containers.run('skxu3/emission-scone3.5', command = "tail -f /dev/null",
+                list_of_containers[i] = [client.containers.run('skxu3/emission-scone3.5', command = "bash bash_file_setup",
                         name = container, remove=True, network='e-mission', mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=True),
                         container]
                 list_of_containers[i][0].pause()
