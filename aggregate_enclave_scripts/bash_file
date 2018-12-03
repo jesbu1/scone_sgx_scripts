@@ -1,16 +1,7 @@
 #!/bin/bash
-
-# clear 
-# while getopts d:c:a: option
-# do
-# case "${option}"
-# in
-# d) DATA=${OPTARG};;
-# c) CONTAINER=${OPTARG};;
-# p) AGGREGATOR=${OPTARG};;
-# esac
-# done
 SCONE_MODE=AUTO
-while true; do
+while true
+do
 	read one two three
 	python3 user_enclave_scripts.py $one $two $three
+done
