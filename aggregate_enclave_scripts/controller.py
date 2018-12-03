@@ -56,7 +56,9 @@ def query_start():
 		for thread in threads:
 			thread.join()
 	return "Finished"	
-if __name__ == "__main__":
+
+@app.route('/start_containers', methods['POST'])
+def start():
 	list_of_containers = list(json.load(open("mock_data.json")).keys())
 	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
 	for i in range(len(list_of_containers)):
@@ -67,4 +69,6 @@ if __name__ == "__main__":
 			container]
 		list_of_containers[i][0].pause()
 	print(list_of_containers)
+
+if __name__ == "__main__":
 	app.run(port=2000, host='0.0.0.0',debug=True)
