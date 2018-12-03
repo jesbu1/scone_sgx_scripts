@@ -10,7 +10,7 @@ import abc
 import subprocess
 import docker
 from docker.types import Mount
-
+list_of_containers = []
 client = docker.from_env()
 
 app = Flask(__name__)
@@ -58,7 +58,6 @@ def query_start():
 	return "Finished"	
 if __name__ == "__main__":
 	app.run(port=2000, host='0.0.0.0',debug=True)
-	global list_of_containers 
 	list_of_containers = list(json.load(open("mock_data.json")).keys())
 	mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
 	for i in range(len(list_of_containers)):
