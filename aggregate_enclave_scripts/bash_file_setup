@@ -1,0 +1,3 @@
+#!/bin/bash
+SCONE_MODE=AUTO
+tail -f /dev/null
