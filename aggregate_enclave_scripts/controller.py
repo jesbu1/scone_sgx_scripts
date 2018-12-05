@@ -52,7 +52,7 @@ def query_start():
         2. Wake them up with docker resume
         3. Ask for query from them
         """
-        request_dict = json.loads(request.data)
+        request_dict = json.loads(request.data.decode('utf-8'))
         query_type = str(request_dict['query_type'])
         privacy_budget = str(request_dict['privacy_budget'])
         print(request_dict)
