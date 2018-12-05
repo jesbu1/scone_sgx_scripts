@@ -26,7 +26,7 @@ def query(query_type, e_id, aggregator_ip):
 if __name__ == "__main__":
     #install('requests')
     print(sys.argv)
-    json_data = json.load(open("mock_data.json"))
+    json_data = json.load(open("scone_sgx_scripts/aggregate_enclave_scripts/mock_data.json"))
     query_type = sys.argv[1]
     enclave_id = sys.argv[2]
     aggregator = sys.argv[3]

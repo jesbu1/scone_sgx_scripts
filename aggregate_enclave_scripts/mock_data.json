@@ -61,7 +61,8 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     },
 
     "28f729d9838a4e8ab66c3a6aac2ecdb0": {
@@ -125,7 +126,8 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     },
 
     "38f729d9838a4e8ab66c3a6aac2ecdb0": {
@@ -189,7 +191,8 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     },
 
     "48f729d9838a4e8ab66c3a6aac2ecdb0": {
@@ -253,7 +256,8 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     },
 
     "58f729d9838a4e8ab66c3a6aac2ecdb0": {
@@ -317,7 +321,8 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     },
 
     "68f729d9838a4e8ab66c3a6aac2ecdb0": {
@@ -381,7 +386,8 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     },
 
     "78f729d9838a4e8ab66c3a6aac2ecdb0": {
@@ -445,7 +451,8 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     },
 
     "88f729d9838a4e8ab66c3a6aac2ecdb0": {
@@ -509,7 +516,8 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     },
 
     "98f729d9838a4e8ab66c3a6aac2ecdb0": {
@@ -573,7 +581,8 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     },
 
     "19f729d9838a4e8ab66c3a6aac2ecdb0": {
@@ -637,6 +646,7 @@
             "write_fmt_time": "2017-07-25T20:26:59.207442-07:00",
             "write_ts": 1501039619.207442,
             "time_zone": "America/Los_Angeles"
-        }
+        },
+        "privacy_budget": 10
     }
 }

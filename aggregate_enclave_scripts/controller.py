@@ -2,14 +2,14 @@
 import sys
 import os
 import requests
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 import json
 import uuid
 import threading
-import abc
 import subprocess
 import docker
 from docker.types import Mount
+json_data = json.load(open("mock_data.json"))
 list_of_containers = list(json.load(open("mock_data.json")).keys())
 client = docker.from_env()
 
@@ -54,7 +54,8 @@ def query_start():
         query_type = str(request.data, 'utf-8')
         print(query_type)
         threads = []
-        aggregator_ip = '0.0.0.0:2001'
+        aggregator_ip = request.environ['REMOTE_ADDR']
+        print("aggregator_ip: " + str(aggregator_ip))
         print("Length of list of containers: " + str(len(list_of_containers)))
         batch_size = 10
         for j in range(0, int(len(list_of_containers) / batch_size) + 1):
