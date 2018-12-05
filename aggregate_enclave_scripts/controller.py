@@ -56,7 +56,7 @@ def query_start():
         privacy_budget = str(request.data['privacy_budget'])
         print(query_type)
         threads = []
-        aggregator_ip = request.environ['REMOTE_ADDR'] + ':' + request.environ.get("REMOTE_PORT")
+        aggregator_ip = request.environ['REMOTE_ADDR'] + ':2001'
         print("aggregator_ip: " + str(aggregator_ip))
         print("Length of list of containers: " + str(len(list_of_containers)))
         batch_size = 10
