@@ -52,9 +52,10 @@ def query_start():
         2. Wake them up with docker resume
         3. Ask for query from them
         """
-        query_type = str(request.data['query_type'], 'utf-8')
-        privacy_budget = str(request.data['privacy_budget'], 'utf-8')
-        print(query_type)
+        request_dict = json.loads(request.data)
+        query_type = str(request_dict['query_type'], 'utf-8')
+        privacy_budget = str(request_dict['privacy_budget'], 'utf-8')
+        print(request_dict)
         threads = []
         aggregator_ip = request.environ['REMOTE_ADDR'] + ':2001'
         print("aggregator_ip: " + str(aggregator_ip))
