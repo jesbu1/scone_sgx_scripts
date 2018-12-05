@@ -65,7 +65,7 @@ class Sum(Query):
     def generate_noise(self, data, privacy_budget):
         sensitivity = 1
         n = len(data)
-        return np.random.laplace(scale=(n * sensitivity)/privacy_budget)
+        return np.random.laplace(scale=(n * sensitivity)/float(privacy_budget))
 
 
     def __repr__(self):
@@ -98,7 +98,7 @@ def start_query():
     for thread in threads:
         thread.join()
     value = query_object.run_query(query_list)
-    noise = query_object.generate_noise(query_list)
+    noise = query_object.generate_noise(query_list, privacy_budget)
     clear_query_list()
     return str(value + noise)
 
