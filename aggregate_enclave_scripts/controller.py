@@ -83,7 +83,7 @@ def start():
                         container]
                 list_of_containers[i][0].pause()
         print(list_of_containers)
-        with open("replayScript.json", "w") as jsonFile:
+        with open("mock_data.json", "w") as jsonFile:
             json.dump(json_data, jsonFile)
         return ""
 
