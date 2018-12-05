@@ -54,7 +54,7 @@ def query_start():
         query_type = str(request.data, 'utf-8')
         print(query_type)
         threads = []
-        aggregator_ip = request.environ['REMOTE_ADDR'] + ':' + request.environ.get("REMOTE_PORT")
+        aggregator_ip = request.environ['REMOTE_ADDR'] + ':2001'
         print("aggregator_ip: " + str(aggregator_ip))
         print("Length of list of containers: " + str(len(list_of_containers)))
         batch_size = 10
