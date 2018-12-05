@@ -1,5 +1,5 @@
 import sys
-import requests
+import http.client
 from flask import Flask, request, Response
 import json
 import uuid
@@ -19,7 +19,9 @@ class RequestThread(threading.Thread):
 
     def run(self):
         # for controller in controllers:
-        r = requests.post('http://' + self.controller + "/request_query", data=str(self.query_object))
+        # r = requests.post('http://' + self.controller + "/request_query", data=str(self.query_object))
+        h1 = http.client.HTTPConnection(self.controller)
+        h1.request("POST", "/request_query", str(self.query_object)) 
         # print(r.text)
         # r = json.loads(r.text)
         # for enclave in r:
@@ -85,7 +87,7 @@ def start_query():
     enclaves_in_query = {}
     query_object = query_mapping[request.data.decode("utf-8")]
 
-    controller_map = ['35.235.87.138:2000']
+    controller_map = ['128.32.37.205:2000']
     threads = []
     for controller in controller_map:
         thread = RequestThread(controller, enclaves_in_query, query_object)
