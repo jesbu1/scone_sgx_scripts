@@ -21,7 +21,8 @@ class RequestThread(threading.Thread):
         # for controller in controllers:
         # r = requests.post('http://' + self.controller + "/request_query", data=str(self.query_object))
         h1 = http.client.HTTPConnection(self.controller)
-        h1.request("POST", "/request_query", str(self.query_object)) 
+        h1.request("POST", "/request_query", str(self.query_object))
+        r1 = h1.getresponse()
         # print(r.text)
         # r = json.loads(r.text)
         # for enclave in r:
@@ -113,4 +114,4 @@ def clear_query_list():
 
 if __name__ == "__main__":
     json_data = json.load(open("mock_data.json"))
-    app.run(host='0.0.0.0', port=80) # Different port than the agg script.
+    app.run(host='0.0.0.0', port=2001) # Different port than the agg script.
