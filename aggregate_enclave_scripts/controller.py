@@ -18,16 +18,17 @@ path = os.path.expanduser("~/e-mission-server/")
 # container_port = 1025
 
 class DockerThread(threading.Thread):
-        def __init__(self, container, query_type, uuid, agg_ip):
+        def __init__(self, container, query_type, uuid, agg_ip, privacy_budget):
                 threading.Thread.__init__(self)
                 self.container = container
                 self.query_type = query_type
                 self.uuid = uuid
                 self.agg_ip = agg_ip
+                self.privacy_budget = privacy_budget
 
         def run(self):
                 self.container.unpause()
-                output = self.container.exec_run('bash bash_file ' + self.query_type + ' ' + self.uuid + ' ' + self.agg_ip)
+                output = self.container.exec_run('bash bash_file ' + self.query_type + ' ' + self.uuid + ' ' + self.agg_ip + ' ' + self.privacy_budget)
                 print(output)
                 self.container.pause()
 
@@ -51,7 +52,8 @@ def query_start():
         2. Wake them up with docker resume
         3. Ask for query from them
         """
-        query_type = str(request.data, 'utf-8')
+        query_type = str(request.data['query_type'], 'utf-8')
+        privacy_budget = str(request.data['privacy_budget'])
         print(query_type)
         threads = []
         aggregator_ip = request.environ['REMOTE_ADDR'] + ':' + request.environ.get("REMOTE_PORT")
@@ -61,7 +63,7 @@ def query_start():
         for j in range(0, int(len(list_of_containers) / batch_size) + 1):
                 for i in range(min(int(len(list_of_containers) - j * batch_size), batch_size)):
                         container = list_of_containers[j * batch_size + i]
-                        thread = DockerThread(container[0], query_type, container[1], aggregator_ip)
+                        thread = DockerThread(container[0], query_type, container[1], aggregator_ip, privacy_budgeti)
                         thread.start()
                         threads.append(thread)
                 for thread in threads:

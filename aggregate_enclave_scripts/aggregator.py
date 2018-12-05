@@ -11,17 +11,18 @@ app = Flask(__name__)
 query_list = []
 
 class RequestThread(threading.Thread):
-    def __init__(self, controller, enclaves_in_query, query_object):
+    def __init__(self, controller, enclaves_in_query, query_object, privacy_budget):
         threading.Thread.__init__(self)
         self.enclaves_in_query = enclaves_in_query
         self.controller = controller
         self.query_object = query_object
+        self.privacy_budget = privacy_budget
 
     def run(self):
         # for controller in controllers:
         # r = requests.post('http://' + self.controller + "/request_query", data=str(self.query_object))
         h1 = http.client.HTTPConnection(self.controller)
-        h1.request("POST", "/request_query", str(self.query_object)) 
+        h1.request("POST", "/request_query", json.dumps({'query_object':self.query_object, 'privacy_budget':self.privacy_budget})) 
         # print(r.text)
         # r = json.loads(r.text)
         # for enclave in r:
@@ -60,12 +61,10 @@ class Sum(Query):
             #self.amount_of_noise += 1
         return total
 
-    def generate_noise(self, data):
+    def generate_noise(self, data, privacy_budget):
         sensitivity = 1
-        epsilon = 0.5
         n = len(data)
-        return 0
-        #return np.random.laplace(scale=(n * sensitivity)/epsilon)
+        return np.random.laplace(scale=(n * sensitivity)/privacy_budget)
 
 
     def __repr__(self):
@@ -85,7 +84,8 @@ def start_query():
     """
     query_mapping = {'sum' : Sum()} #TODO: Fill in query mapping from string to object
     enclaves_in_query = {}
-    query_object = query_mapping[request.data.decode("utf-8")]
+    query_object = query_mapping[request.data['query_object']]
+    privacy_budget = request.data['privacy_budget']
 
     controller_map = ['128.32.37.205:2000']
     threads = []
