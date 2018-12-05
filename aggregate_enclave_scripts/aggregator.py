@@ -22,7 +22,7 @@ class RequestThread(threading.Thread):
         # for controller in controllers:
         # r = requests.post('http://' + self.controller + "/request_query", data=str(self.query_object))
         h1 = http.client.HTTPConnection(self.controller)
-        h1.request("POST", "/request_query", json.dumps({'query_object':self.query_object, 'privacy_budget':self.privacy_budget})) 
+        h1.request("POST", "/request_query", json.dumps({'query_type':str(self.query_object), 'privacy_budget':self.privacy_budget})) 
         r1 = h1.getresponse()
         # print(r.text)
         # r = json.loads(r.text)
@@ -86,7 +86,7 @@ def start_query():
     query_mapping = {'sum' : Sum()} #TODO: Fill in query mapping from string to object
     enclaves_in_query = {}
     request_dict = json.loads(request.data.decode('utf-8'))
-    query_object = str(query_mapping[request_dict['query_object']])
+    query_object = str(query_mapping[request_dict['query_type']])
     privacy_budget = str(request_dict['privacy_budget'])
 
     controller_map = ['128.32.37.205:2000']
