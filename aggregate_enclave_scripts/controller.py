@@ -64,7 +64,7 @@ def query_start():
         for j in range(0, int(len(list_of_containers) / batch_size) + 1):
                 for i in range(min(int(len(list_of_containers) - j * batch_size), batch_size)):
                         container = list_of_containers[j * batch_size + i]
-                        thread = DockerThread(container[0], query_type, container[1], aggregator_ip, privacy_budgeti)
+                        thread = DockerThread(container[0], query_type, container[1], aggregator_ip, privacy_budget)
                         thread.start()
                         threads.append(thread)
                 for thread in threads:
