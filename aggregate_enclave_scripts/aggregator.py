@@ -91,7 +91,7 @@ def start_query():
     controller_map = ['128.32.37.205:2000']
     threads = []
     for controller in controller_map:
-        thread = RequestThread(controller, enclaves_in_query, query_object)
+        thread = RequestThread(controller, enclaves_in_query, query_object, privacy_budget)
         thread.start()
         threads.append(thread)
     for thread in threads:
