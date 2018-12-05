@@ -1,25 +1,25 @@
 import sys
-import requests
 # from flask import Flask, request, Response
 import json
 import ast
 import os
+import http.client
 
 def query(query_type, e_id, aggregator_ip):
     if query_type == "sum":
-        aggregator_ip = aggregator_ip + "/add_to_query_list"
         try:
+            h1 = http.client.HTTPConnection(aggregator_ip)
             user_data = json_data[e_id]["data"]["speeds"]
             # print(user_data)
             if user_data == []:
                 data = json.dumps({'response':'none'})
-                requests.post("http://" + aggregator_ip, data=data)
+                h1.request("POST", "/add_to_query_list", data) 
             else:
                 data = json.dumps({'response':'yes', 'value': sum(user_data)})
-                requests.post("http://" + aggregator_ip, data=data)
+                h1.request("POST", "/add_to_query_list", data)
         except:
             data = json.dumps({'response':'none'})
-            requests.post("http://" + aggregator_ip, data=data)
+            h1.request("POST", "/add_to_query_list", data)
     else:
         raise NotImplementedError
 

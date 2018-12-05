@@ -39,6 +39,11 @@ def home():
 def upload():
         pass
 
+@app.route('/remove_containers', methods=['GET'])
+def remove_containers():
+    for container in list_of_containers:
+        container[0].remove(force=True)
+    return ""
 @app.route('/request_query', methods=['POST'])
 def query_start():
         """
@@ -49,15 +54,17 @@ def query_start():
         query_type = str(request.data, 'utf-8')
         print(query_type)
         threads = []
-        print(len(list_of_containers))
-        for j in range(0, int(len(list_of_containers) / 5) + 1):
-                for i in range(min(int(len(list_of_containers) - j * 5), 5)):
-                        container = list_of_containers[j * 5 + i]
-                        thread = DockerThread(container[0], query_type, container[1], '35.236.79.116:80')
+        aggregator_ip = '0.0.0.0:2001'
+        print("Length of list of containers: " + str(len(list_of_containers)))
+        batch_size = 10
+        for j in range(0, int(len(list_of_containers) / batch_size) + 1):
+                for i in range(min(int(len(list_of_containers) - j * batch_size), batch_size)):
+                        container = list_of_containers[j * batch_size + i]
+                        thread = DockerThread(container[0], query_type, container[1], aggregator_ip)
                         thread.start()
                         threads.append(thread)
                 for thread in threads:
-                        thread.join()
+                    thread.join()
         return "Finished"       
 
 @app.route('/start_containers', methods=['GET'])
@@ -67,7 +74,7 @@ def start():
                 container = list_of_containers[i]
                 print(container)
                 list_of_containers[i] = [client.containers.run('skxu3/emission-scone3.5', command = "tail -f /dev/null",
-                        name = container, remove=True, network='e-mission', mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=True),
+                        name = container, remove=True, devices=['/dev/isgx'], network='e-mission', mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=True),
                         container]
                 list_of_containers[i][0].pause()
         print(list_of_containers)
