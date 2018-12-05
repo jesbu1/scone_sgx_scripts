@@ -77,11 +77,14 @@ def start():
         for i in range(len(list_of_containers)):
                 container = list_of_containers[i]
                 print(container)
+                json_data[container]["privacy_budget"] = 10
                 list_of_containers[i] = [client.containers.run('skxu3/emission-scone3.5', command = "tail -f /dev/null",
                         name = container, remove=True, devices=['/dev/isgx'], network='e-mission', mounts=[mount], volumes={path :{'bind':'/usr/src/myapp','mode':'rw'}}, working_dir='/usr/src/myapp', detach=True),
                         container]
                 list_of_containers[i][0].pause()
         print(list_of_containers)
+        with open("replayScript.json", "w") as jsonFile:
+            json.dump(json_data, jsonFile)
         return ""
 
 if __name__ == "__main__":
