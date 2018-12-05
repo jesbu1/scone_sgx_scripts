@@ -53,8 +53,8 @@ def query_start():
         3. Ask for query from them
         """
         request_dict = json.loads(request.data)
-        query_type = str(request_dict['query_type'], 'utf-8')
-        privacy_budget = str(request_dict['privacy_budget'], 'utf-8')
+        query_type = str(request_dict['query_type'])
+        privacy_budget = str(request_dict['privacy_budget'])
         print(request_dict)
         threads = []
         aggregator_ip = request.environ['REMOTE_ADDR'] + ':2001'
