@@ -84,8 +84,8 @@ def start_query():
     """
     query_mapping = {'sum' : Sum()} #TODO: Fill in query mapping from string to object
     enclaves_in_query = {}
-    query_object = query_mapping[request.data['query_object']]
-    privacy_budget = request.data['privacy_budget']
+    query_object = str(query_mapping[request.data['query_object']], 'utf-8')
+    privacy_budget = str(request.data['privacy_budget'], 'utf-8')
 
     controller_map = ['128.32.37.205:2000']
     threads = []
