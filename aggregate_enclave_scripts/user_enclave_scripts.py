@@ -21,7 +21,7 @@ def query(query_type, e_id, aggregator_ip, privacy_budget):
                 if remaining_budget >= privacy_budget:
                     data = json.dumps({'response':'yes', 'value': sum(user_data)})
                     json_data[e_id]["privacy_budget"] = remaining_budget - privacy_budget
-                    with open("replayScript.json", "w") as jsonFile:
+                    with open(data_path, "w") as jsonFile:
                         json.dump(json_data, jsonFile)
                 else:
                     data = json.dumps({'response':'none'})
