@@ -8,7 +8,7 @@ import uuid
 import threading
 import subprocess
 import atexit
-from flask.ext.script import Manager
+from flask_script import Manager
 import docker
 from docker.types import Mount
 json_data = json.load(open("exp_data.json"))
