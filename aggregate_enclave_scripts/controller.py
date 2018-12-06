@@ -21,8 +21,8 @@ manager = Manager(app)
 
 @manager.command
 def runserver():
-    app.run(port=2000, host='0.0.0.0',debug=True)
     start()
+    app.run(port=2000, host='0.0.0.0',debug=True)
 # container_port = 1025
 
 
@@ -101,6 +101,6 @@ def close_running_threads():
     for container in list_of_containers:
         container[0].remove(force=True)
     print("Shutdown containers!")
-
+atexit.register(close_running_threads)
 if __name__ == "__main__":
     manager.run()
