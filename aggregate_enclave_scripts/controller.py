@@ -7,6 +7,8 @@ import json
 import uuid
 import threading
 import subprocess
+import atexit
+from flask.ext.script import Manager
 import docker
 from docker.types import Mount
 json_data = json.load(open("mock_data.json"))
@@ -15,7 +17,14 @@ client = docker.from_env()
 
 app = Flask(__name__)
 path = os.path.expanduser("~/e-mission-server/")
+manager = Manager(app)
+
+@manager.command
+def runserver():
+    app.run(port=2000, host='0.0.0.0',debug=True)
+    start()
 # container_port = 1025
+
 
 class DockerThread(threading.Thread):
         def __init__(self, container, query_type, uuid, agg_ip, privacy_budget):
@@ -87,5 +96,11 @@ def start():
             json.dump(json_data, jsonFile)
         return ""
 
+#defining function to run on shutdown
+def close_running_threads():
+    for container in list_of_containers:
+        container[0].remove(force=True)
+    print("Shutdown containers!")
+
 if __name__ == "__main__":
-        app.run(port=2000, host='0.0.0.0',debug=True)
+    manager.run()
