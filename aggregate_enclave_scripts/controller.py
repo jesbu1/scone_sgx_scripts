@@ -10,8 +10,9 @@ import subprocess
 import atexit
 import docker
 from docker.types import Mount
-json_data = json.load(open("mock_data.json"))
-list_of_containers = list(json.load(open("mock_data.json")).keys())
+data_file = "exp_data.json"
+json_data = json.load(open(data_file))
+list_of_containers = list(json.load(open(data_file)).keys())
 client = docker.from_env()
 
 app = Flask(__name__)
@@ -77,8 +78,8 @@ def query_start():
 @app.route('/start_containers', methods=['GET'])
 def start():
         global json_data, list_of_containers
-        json_data = json.load(open("mock_data.json"))
-        list_of_containers = list(json.load(open("mock_data.json")).keys())
+        json_data = json.load(open(data_file))
+        list_of_containers = list(json.load(open(data_file)).keys())
         mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
         for i in range(len(list_of_containers)):
                 container = list_of_containers[i]
@@ -89,7 +90,7 @@ def start():
                         container]
                 list_of_containers[i][0].pause()
         print(list_of_containers)
-        with open("mock_data.json", "w") as jsonFile:
+        with open(data_file, "w") as jsonFile:
             json.dump(json_data, jsonFile)
         return ""
 
