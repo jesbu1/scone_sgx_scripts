@@ -8,7 +8,6 @@ import uuid
 import threading
 import subprocess
 import atexit
-from flask_script import Manager
 import docker
 from docker.types import Mount
 json_data = json.load(open("mock_data.json"))
@@ -17,12 +16,7 @@ client = docker.from_env()
 
 app = Flask(__name__)
 path = os.path.expanduser("~/e-mission-server/")
-manager = Manager(app)
 
-@manager.command
-def runserver():
-    start()
-    app.run(port=2000, host='0.0.0.0',debug=True)
 # container_port = 1025
 
 
@@ -82,6 +76,9 @@ def query_start():
 
 @app.route('/start_containers', methods=['GET'])
 def start():
+        global json_data, list_of_containers
+        json_data = json.load(open("mock_data.json"))
+        list_of_containers = list(json.load(open("mock_data.json")).keys())
         mount = Mount(target='/usr/src/app/conf/storage/db.conf', source= path + 'conf/storage/db.conf', type='bind')
         for i in range(len(list_of_containers)):
                 container = list_of_containers[i]
@@ -103,4 +100,6 @@ def close_running_threads():
     print("Shutdown containers!")
 atexit.register(close_running_threads)
 if __name__ == "__main__":
-    manager.run()
+    atexit.register(remove_containers)
+    start()
+    threading.Thread(target=app.run, args=('0.0.0.0', 2000)).start()
