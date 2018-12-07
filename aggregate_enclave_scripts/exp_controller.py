@@ -8,7 +8,7 @@ import uuid
 import threading
 import subprocess
 import atexit
-from flask_script import Manager
+#from flask_script import Manager
 import docker
 from docker.types import Mount
 json_data = json.load(open("exp_data.json"))
@@ -17,12 +17,12 @@ client = docker.from_env()
 
 app = Flask(__name__)
 path = os.path.expanduser("~/e-mission-server/")
-manager = Manager(app)
+#manager = Manager(app)
 
-@manager.command
-def runserver():
-    start()
-    app.run(port=2000, host='0.0.0.0',debug=True)
+#@manager.command
+#def runserver():
+#    start()
+#    app.run(port=2000, host='0.0.0.0',debug=True)
 # container_port = 1025
 
 
@@ -106,5 +106,6 @@ def close_running_threads():
     print("Shutdown containers!")
 
 if __name__ == "__main__":
-    manager.run()
-atexit.register(close_running_threads)
+    atexit.register(remove_containers)
+    start()
+    threading.Thread(target=app.run, args=('0.0.0.0', 2000)).start()
